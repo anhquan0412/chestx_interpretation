@@ -1,4 +1,5 @@
 import os
+from cv2 import transform
 
 import numpy as np
 import pandas as pd
@@ -7,6 +8,7 @@ from PIL import Image
 
 import torch
 from torch.utils.data import Dataset, DataLoader
+from torchvision.transforms import Compose
 
 COMPETITION_TASKS = [
     "No Finding",
@@ -19,7 +21,8 @@ COMPETITION_TASKS = [
 
 class ChexpertBaseDataset(Dataset):
     def __init__(self, root_dir, df, transforms=None, classes=None, use_frontal=True, uncertainty_method="zero", smoothing_lower_bound=0, smoothing_upper_bound=1):
-        self.transforms = transforms
+        if transforms:
+            self.transforms = Compose(transforms)
         df = df.copy()
 
         # load up the data
@@ -51,20 +54,30 @@ class ChexpertBaseDataset(Dataset):
     def __len__(self):
         return len(self.image_paths)
 
+    def _preprocess_image(self, image):
+        image = self.transforms(image)
+        return image
+
     def __getitem__(self, index):
         raise NotImplementedError
 
 class ChexpertViTDataset(ChexpertBaseDataset):
-    def __init__(self, root_dir, df, feature_extractor, classes=None, use_frontal=True, uncertainty_method="zero", smoothing_lower_bound=0, smoothing_upper_bound=1):
+    def __init__(self, root_dir, df, feature_extractor, include_labels=True, transforms=None, classes=None, use_frontal=True, uncertainty_method="zero", smoothing_lower_bound=0, smoothing_upper_bound=1):
         self.feature_extractor = feature_extractor
-        super().__init__(root_dir, df, None, classes, use_frontal, uncertainty_method, smoothing_lower_bound, smoothing_upper_bound)
+        self.include_labels = include_labels
+        super().__init__(root_dir, df, transforms, classes, use_frontal, uncertainty_method, smoothing_lower_bound, smoothing_upper_bound)
 
     def __getitem__(self, index):
         path = self.image_paths[index]
         data = Image.open(path).convert("RGB")
+
+        if self.transforms:
+            data = self._preprocess_image(data)
+
         features = self.feature_extractor(data, return_tensors='pt')
         features['pixel_values'] = torch.squeeze(features['pixel_values'], 0)
-        features['labels'] = torch.Tensor(self.image_labels[index])
+        if self.include_labels:
+            features['labels'] = torch.Tensor(self.image_labels[index])
         return features
 
 class ChexpertViTDataloader(DataLoader):

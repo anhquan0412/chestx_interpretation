@@ -1,6 +1,7 @@
 pyrightconfig.json
 ChexPert
 vit-large-chexpert
+vit-mae-chexpert
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
