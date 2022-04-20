@@ -9,12 +9,15 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 
 class ChexpertBaseDataset(Dataset):
-    def __init__(self, root_dir, df, transforms=None, use_frontal=True, uncertainty_method="zero", smoothing_lower_bound=0, smoothing_upper_bound=1):
+    def __init__(self, root_dir, df, transforms=None, classes=None, use_frontal=True, uncertainty_method="zero", smoothing_lower_bound=0, smoothing_upper_bound=1):
         self.transforms = transforms
         df = df.copy()
 
         # load up the data
-        labels = df.iloc[:, 5:].columns.tolist()
+        if classes:
+            labels = classes
+        else:
+            labels = df.iloc[:, 5:].columns.tolist()
         df[labels] = df[labels].fillna(0)
 
         self.labels = labels
@@ -43,9 +46,9 @@ class ChexpertBaseDataset(Dataset):
         raise NotImplementedError
 
 class ChexpertViTDataset(ChexpertBaseDataset):
-    def __init__(self, root_dir, df, feature_extractor, use_frontal=True, uncertainty_method="zero", smoothing_lower_bound=0, smoothing_upper_bound=1):
+    def __init__(self, root_dir, df, feature_extractor, classes=None, use_frontal=True, uncertainty_method="zero", smoothing_lower_bound=0, smoothing_upper_bound=1):
         self.feature_extractor = feature_extractor
-        super().__init__(root_dir, df, None, use_frontal, uncertainty_method, smoothing_lower_bound, smoothing_upper_bound)
+        super().__init__(root_dir, df, None, classes, use_frontal, uncertainty_method, smoothing_lower_bound, smoothing_upper_bound)
 
     def __getitem__(self, index):
         path = self.image_paths[index]
