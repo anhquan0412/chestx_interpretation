@@ -8,6 +8,15 @@ from PIL import Image
 import torch
 from torch.utils.data import Dataset, DataLoader
 
+COMPETITION_TASKS = [
+    "No Finding",
+    "Atelectasis",
+    "Cardiomegaly",
+    "Consolidation",
+    "Edema",
+    "Pleural Effusion"
+]
+
 class ChexpertBaseDataset(Dataset):
     def __init__(self, root_dir, df, transforms=None, classes=None, use_frontal=True, uncertainty_method="zero", smoothing_lower_bound=0, smoothing_upper_bound=1):
         self.transforms = transforms
