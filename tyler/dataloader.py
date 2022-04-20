@@ -41,12 +41,11 @@ class ChexpertBaseDataset(Dataset):
 
     def __getitem__(self, index):
         raise NotImplementedError
-    
 
 class ChexpertViTDataset(ChexpertBaseDataset):
     def __init__(self, root_dir, df, feature_extractor, use_frontal=True, uncertainty_method="zero", smoothing_lower_bound=0, smoothing_upper_bound=1):
         self.feature_extractor = feature_extractor
-        super().__init__(self, root_dir, df, None, use_frontal, uncertainty_method, smoothing_lower_bound, smoothing_upper_bound)
+        super().__init__(root_dir, df, None, use_frontal, uncertainty_method, smoothing_lower_bound, smoothing_upper_bound)
 
     def __getitem__(self, index):
         path = self.image_paths[index]
