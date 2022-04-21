@@ -11,7 +11,6 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision.transforms import Compose
 
 COMPETITION_TASKS = [
-    "No Finding",
     "Atelectasis",
     "Cardiomegaly",
     "Consolidation",
@@ -23,6 +22,8 @@ class ChexpertBaseDataset(Dataset):
     def __init__(self, root_dir, df, transforms=None, classes=None, use_frontal=True, uncertainty_method="zero", smoothing_lower_bound=0, smoothing_upper_bound=1):
         if transforms:
             self.transforms = Compose(transforms)
+        else:
+            self.transforms = None
         df = df.copy()
 
         # load up the data
