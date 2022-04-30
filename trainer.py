@@ -62,7 +62,7 @@ def get_loss_and_optimizer(model,lr,loss_type='bce',num_classes=5,imratio=None,u
 def train_fastai_learner(fastai_loader,model,loss,opt,lr,n_epochs,
                          monitor='roc_auc_score',
                          weight_name='weight',
-                         use_1cycle=False,
+                         lr_scheduler='1cycle', # either '1cycle','flat_cos' or 'normal'
                          use_fp16=True,
                          mixup_alpha=None):
     #define callback
@@ -85,7 +85,9 @@ def train_fastai_learner(fastai_loader,model,loss,opt,lr,n_epochs,
     if use_fp16:
         fastai_learn = fastai_learn.to_fp16()
     
-    if use_1cycle:
+    if lr_scheduler=='1cycle':
         fastai_learn.fit_one_cycle(n_epochs,lr_max = lr)
-    else:
+    elif lr_scheduler=='flat_cos':
         fastai_learn.fit_flat_cos(n_epochs,lr = lr,pct_start=0.2)
+    else:
+        fastai_learn.fit(n_epochs,lr = lr)

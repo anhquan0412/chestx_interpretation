@@ -92,8 +92,22 @@ class CheXpertExtended(Dataset):
                     self.df.loc[self.df[col] == -1, col] = np.random.uniform(0.55, 0.85, size=self.df.loc[self.df[col] == -1, col].shape)  
                 elif col in ['Cardiomegaly','Consolidation',  'Pleural Effusion']: # u-zero smoothing
                     self.df.loc[self.df[col] == -1, col] = np.random.uniform(0.0, 0.3, size=self.df.loc[self.df[col] == -1, col].shape)  
+                    
+        elif uncertainty_method=='default-smoothing-one':
+            for col in train_cols:
+                if col in ['Edema', 'Atelectasis']: # u-one smoothing
+                    self.df.loc[self.df[col] == -1, col] = np.random.uniform(0.55, 0.85, size=self.df.loc[self.df[col] == -1, col].shape)  
+                elif col in ['Cardiomegaly','Consolidation',  'Pleural Effusion']: # u-zero
+                    self.df[col].replace(-1, 0, inplace=True) 
 
+        elif uncertainty_method=='default-smoothing-zero':
+            for col in train_cols:
+                if col in ['Edema', 'Atelectasis']: # u-one smoothing
+                    self.df[col].replace(-1, 1, inplace=True)  
+                elif col in ['Cardiomegaly','Consolidation',  'Pleural Effusion']: # u-zero
+                    self.df.loc[self.df[col] == -1, col] = np.random.uniform(0.0, 0.3, size=self.df.loc[self.df[col] == -1, col].shape)  
 
+                    
         for col in train_cols:
             self.df[col].fillna(0, inplace=True)
 
