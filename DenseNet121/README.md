@@ -20,7 +20,7 @@ Modification
 - [AUCMMS.py](AUCMMS.py): originally from libauc library, with a small modification of adding sigmoid to y_pred before calculating the loss. This modification is needed for fastai learner
 - [pesgg.py](PESGG.py): originally from libauc library, with a small modification of adding an input parameters ```params``` in the PESG optimizer, as this is a required input of any deep learning optimizer. This modification is needed for fastai learner
 
-To run the notebooks, make sure to install appropriate packages mentioned in [experiment.yml](experiment.yml)
+To run the notebooks, make sure to install appropriate packages mentioned in [experiment.yml](environment.yml)
 
 
 
