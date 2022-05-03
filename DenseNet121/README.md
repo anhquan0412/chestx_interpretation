@@ -18,7 +18,7 @@ Modification
 - [dataloader.py](dataloader.py): based on libauc's chexpert.py, I added several label smoothing variation and sampling technique (so that I can perform several experiments on a fraction of the data to save times). I also added a dataloader helper to get the data loader for fastai/pytorch training
 - [trainer.py](trainer.py): where I define helper functions to get optimizers or loss functions based on input parameters, and a trainer object to train the model with input params such as trainning with mixed precisions, what score to monitor, adding mixup augmentation or not, ...
 - [AUCMMS.py](AUCMMS.py): originally from libauc library, with a small modification of adding sigmoid to y_pred before calculating the loss. This modification is needed for fastai learner
-- [pesgg.py](PESGG.py): originally from libauc library, with a small modification of adding an input parameters ```params``` in the PESG optimizer, as this is a required input of any deep learning optimizer. This modification is needed for fastai learner
+- [pesgg.py](pesgg.py): originally from libauc library, with a small modification of adding an input parameters ```params``` in the PESG optimizer, as this is a required input of any deep learning optimizer. This modification is needed for fastai learner
 
 To run the notebooks, make sure to install appropriate packages mentioned in [experiment.yml](environment.yml)
 
