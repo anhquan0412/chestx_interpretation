@@ -4,6 +4,7 @@ Here are all the experiments done for the report, and an extra notebook about ap
 
 - [Uncertainty Replacement Experiments with 1cycle](1_pick_best_uncertainty_replacement.ipynb): where I ran experiments to compare different uncertainty replacement approach, such as U-Zeros, U-Ones, U-One+LSR (known as U-One smoothing in the notebook) and U-Default.
 - [Two-stage method with 1cycle and progressive resizing](2_second_stage_AUCM_Multilabel_ProgressiveResizing.ipynb): where I ran two-stage methods to achieve highest AUC score possible for Chexpert 5-class multilabel task.
+- [(Bonus) Adding mixup augmentation to U-default]((Bonus)_U-default_with_Mixup.ipynb): Mixup was added as a regularization technique. This fixed the overfitting problems in some cases (this can be observed when comparing the learning curve before/after mixup is applied), but didn't overall improve performance on validation set. Due to the report limit, these experiments weren't added to the report.
 
 Deep Learning framework used:
 - Pytorch: https://pytorch.org/
