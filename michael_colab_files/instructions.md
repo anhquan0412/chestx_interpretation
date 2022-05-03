@@ -1,0 +1,5 @@
+- Create new folder in google drive
+- Add `tyler/dataloader.py`, `tyler/trainer.py`, `tyler/utils.py` files to this folder Google Drive
+- Add CheXpert zip file to same folder as above in Google Drive
+- Modify filepaths in colab notebooks to reference above folder and its contents
+- Move .ipynb file to Colab and run in colab.
