@@ -62,6 +62,22 @@ class ChexpertBaseDataset(Dataset):
     def __getitem__(self, index):
         raise NotImplementedError
 
+class ChexpertDensenetDataset(ChexpertBaseDataset):
+    def __getitem__(self, index):
+        path = self.image_paths[index]
+        data = Image.open(path).convert("RGB")
+
+        if self.transforms:
+            data = self._preprocess_image(data)
+
+        return torch.squeeze(data, 0), torch.Tensor(self.image_labels[index])
+
+class ChexpertDensenetDataloader(DataLoader):
+    def __init__(self, root_dir, df, transforms=None, classes=None, use_frontal=True, uncertainty_method="zeros", smoothing_lower_bound=0, smoothing_upper_bound=1,
+                 batch_size=1, shuffle=False, num_workers=0):
+        dataset = ChexpertDensenetDataset(root_dir, df, transforms, classes, use_frontal, uncertainty_method, smoothing_lower_bound, smoothing_upper_bound)
+        super().__init__(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+
 class ChexpertViTDataset(ChexpertBaseDataset):
     def __init__(self, root_dir, df, feature_extractor, include_labels=True, transforms=None, classes=None, use_frontal=True, uncertainty_method="zero", smoothing_lower_bound=0, smoothing_upper_bound=1):
         self.feature_extractor = feature_extractor
